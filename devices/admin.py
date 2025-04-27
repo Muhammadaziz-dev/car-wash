@@ -37,7 +37,7 @@ class DeviceAdmin(admin.ModelAdmin):
 
 @admin.register(WashProgram)
 class WashProgramAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price_per_minute', 'is_active']
+    list_display = ['name', 'price_per_minute', 'price_per_second', 'is_active']
     list_filter = ['is_active']
     search_fields = ['name', 'description']
 

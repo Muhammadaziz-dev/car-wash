@@ -6,6 +6,8 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from config.views import debug_urls
+
 schema_view = get_schema_view(
       openapi.Info(
          title="Car Wash Admin API",
@@ -24,7 +26,8 @@ urlpatterns = [
     path('loyalty/', include('loyalty.urls')),
     path('devices/', include('devices.urls')),
     path('reporting/', include('reporting.urls')),
-    path('configurations/', include('configurations.urls'))
+    path('configurations/', include('configurations.urls')),
+    path('debug/', debug_urls),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

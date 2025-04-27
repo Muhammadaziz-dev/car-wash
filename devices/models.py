@@ -10,6 +10,11 @@ class Device(models.Model):
         ('error', 'Error'),
         ('disabled', 'Disabled'),
     )
+    REGISTRATION_STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('verified', 'Verified'),
+        ('rejected', 'Rejected'),
+    )
 
     name = models.CharField(max_length=100)
     device_id = models.CharField(max_length=50, unique=True)
@@ -22,13 +27,19 @@ class Device(models.Model):
     is_active = models.BooleanField(default=True)
     last_seen = models.DateTimeField(null=True, blank=True)
 
+    registration_status = models.CharField(max_length=20, choices=REGISTRATION_STATUS_CHOICES, default='pending')
+    registration_message = models.TextField(blank=True)
+    last_handshake_attempt = models.DateTimeField(null=True, blank=True)
+
     def __str__(self):
         return f"{self.name} ({self.device_id})"
 
 class WashProgram(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    price_per_minute = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
+    price_per_minute = models.DecimalField(max_digits=10, blank=True, null=True, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
+    price_per_second = models.DecimalField(max_digits=10, decimal_places=2,
+                                           validators=[MinValueValidator(Decimal('0.01'))], default=Decimal('0.16667'))
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
@@ -73,6 +84,10 @@ class DeviceConfiguration(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    # Add these fields to DeviceConfiguration model
+    engine_performance = models.IntegerField(default=50, validators=[MinValueValidator(0), MaxValueValidator(100)])
+    pump_performance = models.IntegerField(default=50, validators=[MinValueValidator(0), MaxValueValidator(100)])
     
     def __str__(self):
         if self.is_template:

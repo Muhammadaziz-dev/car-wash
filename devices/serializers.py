@@ -11,7 +11,8 @@ class DeviceSerializer(serializers.ModelSerializer):
 class WashProgramSerializer(serializers.ModelSerializer):
     class Meta:
         model = WashProgram
-        fields = ['id', 'name', 'description', 'price_per_minute', 'is_active']
+        fields = ['id', 'name', 'description', 'price_per_minute', 'is_active','price_per_second']
+
 
 class DeviceProgramSettingSerializer(serializers.ModelSerializer):
     program_name = serializers.CharField(source='program.name', read_only=True)
@@ -28,7 +29,7 @@ class DeviceConfigurationSerializer(serializers.ModelSerializer):
         fields = ['id', 'device', 'price_per_minute', 'default_timeout', 
                  'bonus_duration_enabled', 'bonus_duration_amount', 
                  'valve_reset_timeout', 'is_template', 'template_name',
-                 'program_settings', 'created_at', 'updated_at']
+                 'program_settings', 'created_at', 'updated_at', 'engine_performance','pump_performance']
         read_only_fields = ['created_at', 'updated_at']
 
 class DeviceConfigTemplateSerializer(serializers.ModelSerializer):

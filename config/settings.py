@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,6 +28,11 @@ SECRET_KEY = 'django-insecure-zmljt7(zt(r48uo^(e)!s*ztpgrsne(a82&5m-jrtqnrl($h*3
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=3),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=10)
+}
 
 
 # Application definition
@@ -201,3 +207,8 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+
+# Device Backend API Settings
+DEVICE_BACKEND_URL = os.environ.get('DEVICE_BACKEND_URL', 'http://10.10.4.230:8000/')
+DEVICE_BACKEND_TOKEN = os.environ.get('DEVICE_BACKEND_TOKEN', '')
